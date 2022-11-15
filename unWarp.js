@@ -2,12 +2,12 @@
 console.clear()
 
 class Matrix {
-    constructor(width, height) {
-        this._matrix = this._makeMatrix(width, height)
-        this.showMatrix()
+    constructor(matrix) {
+      this._matrix = matrix
+      this.showMatrix()
     }
 
-    _makeMatrix(width, height) {
+    static generateRandomMatrix(width, height) {
         let matrix = []
         for (let i = 0; i < height; i++) {
             matrix[i] = []
@@ -16,7 +16,7 @@ class Matrix {
                 matrix[i][ii] = (Math.floor(Math.random() * 10))
             }
         }
-        return matrix
+        return new Matrix(matrix)
     }
 
     showMatrix() {
@@ -26,62 +26,86 @@ class Matrix {
     }
 
     _getValue(x,y) {
-        if ((y > this._matrix.length) || (x > this._matrix[0].length) || ((x * y) <= 0)){
+        if ((y > this._matrix.length - 1) || (x > this._matrix[0].length - 1) || ((x * y) < 0)){
             console.log(`Out of range`)
         } else {
-            console.log(this._matrix[y-1][x-1])
-            return this._matrix[y-1][x-1]
+            // console.log(this._matrix[y+this.shiftY][x+this.shiftX])
+            return this._matrix[y+this._subMatrixShiftY][x+this._subMatrixShiftX]
         }
     }
 
-    _walkArround(startX,startY,width,height) {
-            // let str = []
-            // let m
-            // // let x = 0
-            
-            // if ((a.length & 1) == 0) {
-            //     m = a.length / 2
-            // } else {
-            //     m = (a.length + 1) / 2
-            // }
-            
-            // for (let x = 0; x < m; x++) {
-            
-            // for (let i = x; i <= (a[x].length - x - 1); i++) {
-            //     str += a[x][i]
-            //     console.log(str)
-            // }
-            
-            // for (let i = x + 1; i <= (a.length - x - 1); i++) {
-            //     str += a[i][a[i].length - x - 1]
-            //     console.log(str)
-            // }
-            
-            // for (let i = a[x].length - x - 2; i >= (0 + x); i--) {
-            //     str += a[a.length - x - 1][i]
-            //     console.log(str)
-            // }
-            
-            // for (let i = a.length - x - 2; i > (0 + x); i--) {
-            //     str += a[i][x]
-            //     console.log(str)
-            // }
-            
-            // }
-            
-            // console.log('---' + str)
+
+
+    // walkArround(startX,startY,width,height) {
+
+    // }
+
+    _setSubMatrix(shiftX,shiftY,width,height) {
+        this._subMatrixShiftX = shiftX
+        this._subMatrixShiftY = shiftY
+        this._subMatrixWidth = width
+        this._subMatrixHeight = height
+    }
+
+    _setup2defPropertyForSubMatrix() {
+        this._subMatrixShiftX = 0
+        this._subMatrixShiftY = 0
+        this._subMatrixWidth = this._matrix[0].length
+        this._subMatrixHeight = this._matrix.length
+    }
+
+    cutSubMatrix(shiftX,shiftY,width,height) {
+        this._setSubMatrix(shiftX,shiftY,width,height)
+        let subMatrix = []
+        for (let y = 0; y < this._subMatrixHeight; y++) {
+            subMatrix[y] = []
+            for (let x = 0; x < this._subMatrixWidth; x++) {
+                subMatrix[y][x] = this._getValue(x,y)
+            }
         }
+        this._setup2defPropertyForSubMatrix()
+        return new Matrix(subMatrix)
+
+    }
+
+    // rotate90degMatrix() {
+    //     let newMatrix = []
+    //     let y = this._matrix.length - 1
+    //     this._setup2defPropertyForSubMatrix()
+    //     for (let x = 0; x < this._matrix[0].length; x++) {
+    //         newMatrix[y] = []
+    //         for (y = this._matrix.length - 1; y >= 0; y--) {
+    //             newMatrix[x][y] = this._getValue(y,x)
+    //         }
+    //     }
+    //     this._matrix = newMatrix
+    //     this.showMatrix()
+    // }
 
 
-    
-
-
-
+    candyFlipMatrix() {
+        let newMatrix = []
+        this._setup2defPropertyForSubMatrix()
+        for (let x = 0; x < this._matrix[0].length; x++) {
+            newMatrix[x] = []
+            for (let y = 0; y < this._matrix.length; y++) {
+                newMatrix[x][y] = this._getValue(x,y)
+            }
+        }
+        this._matrix = newMatrix
+        this.showMatrix()
+    }
 
 }
+  
+const array1 = Matrix.generateRandomMatrix(6,6)
+console.log('----------')
+const array2 = array1.cutSubMatrix(1,1,4,4)
+console.log('----------')
+const array3 = array2.cutSubMatrix(1,1,2,3)
+console.log('----------')
+array3.candyFlipMatrix()
 
-const array = new Matrix(6, 6)
+// array3.rotate90degMatrix()
 
-// array._getValue(1, 4)
 
-// array._walkArround(2,2,4,4)
