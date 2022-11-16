@@ -3,8 +3,9 @@ console.clear()
 
 class Matrix {
     constructor(matrix) {
-      this._matrix = matrix
-      this.showMatrix()
+        this._resetToDefaults()
+        this._matrix = matrix
+        this.showMatrix()
     }
 
     static generateRandomMatrix(width, height) {
@@ -36,9 +37,9 @@ class Matrix {
 
 
 
-    // walkArround(startX,startY,width,height) {
+    _walkArround(startX,startY,width,height) {
 
-    // }
+    }
 
     _setSubMatrix(shiftX,shiftY,width,height) {
         this._subMatrixShiftX = shiftX
@@ -47,7 +48,7 @@ class Matrix {
         this._subMatrixHeight = height
     }
 
-    _setup2defPropertyForSubMatrix() {
+    _resetToDefaults() {
         this._subMatrixShiftX = 0
         this._subMatrixShiftY = 0
         this._subMatrixWidth = this._matrix[0].length
@@ -63,7 +64,7 @@ class Matrix {
                 subMatrix[y][x] = this._getValue(x,y)
             }
         }
-        this._setup2defPropertyForSubMatrix()
+        this._resetToDefaults()
         return new Matrix(subMatrix)
 
     }
@@ -71,7 +72,7 @@ class Matrix {
     // rotate90degMatrix() {
     //     let newMatrix = []
     //     let y = this._matrix.length - 1
-    //     this._setup2defPropertyForSubMatrix()
+    //     this._resetToDefaults()
     //     for (let x = 0; x < this._matrix[0].length; x++) {
     //         newMatrix[y] = []
     //         for (y = this._matrix.length - 1; y >= 0; y--) {
