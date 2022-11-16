@@ -1,48 +1,43 @@
 'use strict'
 console.clear()
 
-class MatrixHandler {
-
-    static _objectSecurityCheck(object) {
-        if ((typeOf(object._matrix) != ))
+class Matrix {
+    constructor(matrix) {
+        this._matrix = matrix
+        this._resetToDefaults()
+        this.showMatrix()
     }
 
-    static showMatrix() {
+    static generateRandomMatrix(width, height) {
+        let matrix = []
+        for (let i = 0; i < height; i++) {
+            matrix[i] = []
+            for(let ii = 0; ii < width; ii++) {
+                matrix[i][ii] = []
+                matrix[i][ii] = (Math.floor(Math.random() * 10))
+            }
+        }
+        return new Matrix(matrix)
+    }
+
+    showMatrix() {
         for (let i = 0; i < this._matrix.length; i++){
             console.log(this._matrix[i])
         }
     }
-    
-    static _resetToDefaults() {
-        this._subMatrixShiftX = 0
-        this._subMatrixShiftY = 0
-        this._subMatrixWidth = this._matrix[0].length
-        this._subMatrixHeight = this._matrix.length
-    }
 
-    static cutSubMatrix(shiftX,shiftY,width,height) {
-        this._setSubMatrix(shiftX,shiftY,width,height)
-        let subMatrix = []
-        for (let y = 0; y < this._subMatrixHeight; y++) {
-            subMatrix[y] = []
-            for (let x = 0; x < this._subMatrixWidth; x++) {
-                subMatrix[y][x] = this._getValue(x,y)
-            }
+    _getValue(x,y) {
+        if ((y > this._matrix.length - 1) || (x > this._matrix[0].length - 1) || ((x * y) < 0)){
+            console.log(`Out of range`)
+        } else {
+            // console.log(this._matrix[y+this.shiftY][x+this.shiftX])
+            return this._matrix[y+this._subMatrixShiftY][x+this._subMatrixShiftX]
         }
-        this._resetToDefaults()
-        return new Matrix(subMatrix)
-
-    }
-
-    static _setSubMatrix(shiftX,shiftY,width,height) {
-        this._subMatrixShiftX = shiftX
-        this._subMatrixShiftY = shiftY
-        this._subMatrixWidth = width
-        this._subMatrixHeight = height
     }
 
 
-    static _walkArround(startX,startY,width,height) {
+
+    _walkArround(startX,startY,width,height) {
         // let str = []
         // let m
         // // let x = 0
@@ -80,7 +75,35 @@ class MatrixHandler {
         // console.log('---' + str)
     }
 
-    static clockwiseRotationOfTheMatrix() {
+    _setSubMatrix(shiftX,shiftY,width,height) {
+        this._subMatrixShiftX = shiftX
+        this._subMatrixShiftY = shiftY
+        this._subMatrixWidth = width
+        this._subMatrixHeight = height
+    }
+
+    _resetToDefaults() {
+        this._subMatrixShiftX = 0
+        this._subMatrixShiftY = 0
+        this._subMatrixWidth = this._matrix[0].length
+        this._subMatrixHeight = this._matrix.length
+    }
+
+    cutSubMatrix(shiftX,shiftY,width,height) {
+        this._setSubMatrix(shiftX,shiftY,width,height)
+        let subMatrix = []
+        for (let y = 0; y < this._subMatrixHeight; y++) {
+            subMatrix[y] = []
+            for (let x = 0; x < this._subMatrixWidth; x++) {
+                subMatrix[y][x] = this._getValue(x,y)
+            }
+        }
+        this._resetToDefaults()
+        return new Matrix(subMatrix)
+
+    }
+
+    clockwiseRotationOfTheMatrix() {
         // let newMatrix = []
         // let yy
         // let xx = this._matrix[0].length
@@ -96,7 +119,7 @@ class MatrixHandler {
     }
 
 
-    static candyFlipMatrix() {
+    candyFlipMatrix() {
         let newMatrix = []
         for (let x = 0; x < this._matrix[0].length; x++) {
             newMatrix[x] = []
@@ -106,42 +129,6 @@ class MatrixHandler {
         }
         this._matrix = newMatrix
         this.showMatrix()
-    }
-
-}
-
-
-
-
-
-
-
-class Matrix {
-    constructor(matrix) {
-        this._matrix = matrix
-        this._resetToDefaults()
-        this.showMatrix()
-    }
-
-    static generateRandomMatrix(width, height) {
-        let matrix = []
-        for (let i = 0; i < height; i++) {
-            matrix[i] = []
-            for(let ii = 0; ii < width; ii++) {
-                matrix[i][ii] = []
-                matrix[i][ii] = (Math.floor(Math.random() * 10))
-            }
-        }
-        return new Matrix(matrix)
-    }
-
-    _getValue(x,y) {
-        if ((y > this._matrix.length - 1) || (x > this._matrix[0].length - 1) || ((x * y) < 0)){
-            console.log(`Out of range`)
-        } else {
-            // console.log(this._matrix[y+this.shiftY][x+this.shiftX])
-            return this._matrix[y+this._subMatrixShiftY][x+this._subMatrixShiftX]
-        }
     }
 
 }
@@ -155,5 +142,6 @@ console.log('----------')
 array3.candyFlipMatrix()
 console.log('----------')
 array3.clockwiseRotationOfTheMatrix()
+console.log(typeof(array3._matrix))
 
 
