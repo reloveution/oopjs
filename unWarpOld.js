@@ -30,49 +30,51 @@ class Matrix {
         if ((y > this._matrix.length - 1) || (x > this._matrix[0].length - 1) || ((x * y) < 0)){
             console.log(`Out of range`)
         } else {
-            // console.log(this._matrix[y+this.shiftY][x+this.shiftX])
             return this._matrix[y+this._subMatrixShiftY][x+this._subMatrixShiftX]
         }
     }
 
 
 
-    _walkArround(startX,startY,width,height) {
-        // let str = []
-        // let m
-        // // let x = 0
+    walkArround() {
+        // this._setSubMatrix(shiftX,shiftY,width,height)
+        let str = []
+        let m
+        // let x = 0
         
-        // if ((a.length & 1) == 0) {
-        //     m = a.length / 2
-        // } else {
-        //     m = (a.length + 1) / 2
-        // }
+        if ((this._matrix.length & 1) == 0) {
+            m = this._matrix.length / 2
+        } else {
+            m = (this._matrix.length + 1) / 2
+        }
+        // должна быть проверка на чётность/нечетность
+        // и у ширины и у высоты матрицы!!
         
-        // for (let x = 0; x < m; x++) {
+        for (let x = 0; x < m; x++) {
         
-        // for (let i = x; i <= (a[x].length - x - 1); i++) {
-        //     str += a[x][i]
-        //     console.log(str)
-        // }
+            for (let i = x; i <= (this._matrix[x].length - x - 1); i++) {
+                str += this._getValue(i,x)
+                // console.log(str)
+            }
+            
+            for (let i = x + 1; i <= (this._matrix.length - x - 1); i++) {
+                str += this._matrix[i][this._matrix[i].length - x - 1]
+                // console.log(str)
+            }
+            
+            for (let i = this._matrix[x].length - x - 2; i >= (0 + x); i--) {
+                str += this._matrix[this._matrix[x].length - x - 2][i]
+                // console.log(str)
+            }
+            
+            for (let i = this._matrix[x].length - x - 2; i > (0 + x); i--) {
+                str += this._getValue(x,i)
+                // console.log(this._getValue(x,i))
+            }
         
-        // for (let i = x + 1; i <= (a.length - x - 1); i++) {
-        //     str += a[i][a[i].length - x - 1]
-        //     console.log(str)
-        // }
+        }
         
-        // for (let i = a[x].length - x - 2; i >= (0 + x); i--) {
-        //     str += a[a.length - x - 1][i]
-        //     console.log(str)
-        // }
-        
-        // for (let i = a.length - x - 2; i > (0 + x); i--) {
-        //     str += a[i][x]
-        //     console.log(str)
-        // }
-        
-        // }
-        
-        // console.log('---' + str)
+        console.log('---' + str)
     }
 
     _setSubMatrix(shiftX,shiftY,width,height) {
@@ -100,7 +102,6 @@ class Matrix {
         }
         this._resetToDefaults()
         return new Matrix(subMatrix)
-
     }
 
     clockwiseRotationOfTheMatrix() {
@@ -137,11 +138,26 @@ const array1 = Matrix.generateRandomMatrix(6,6)
 console.log('----------')
 const array2 = array1.cutSubMatrix(1,1,4,4)
 console.log('----------')
-const array3 = array2.cutSubMatrix(1,1,2,3)
-console.log('----------')
-array3.candyFlipMatrix()
-console.log('----------')
-array3.clockwiseRotationOfTheMatrix()
-console.log(typeof(array3._matrix))
+array2.walkArround()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// const array3 = array2.cutSubMatrix(1,1,2,3)
+// console.log('----------')
+// array3.candyFlipMatrix()
+// console.log('----------')
+// array3.clockwiseRotationOfTheMatrix()
+// console.log(typeof(array3._matrix))
 
 
