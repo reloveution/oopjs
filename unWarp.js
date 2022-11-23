@@ -1,7 +1,7 @@
 'use strict'
 console.clear()
 
-class MatrixHandler {
+class MatrixTools {
 
     static _objectSecurityCheck(object) {
         if ((typeOf(object._matrix) != ))
